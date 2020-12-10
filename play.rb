@@ -3,6 +3,7 @@ require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
 require './cards.rb'
+require './deck.rb'
 
 def create_deck
     all_cards = []
