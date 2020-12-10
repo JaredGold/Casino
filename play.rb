@@ -5,6 +5,9 @@ require 'tty-prompt'
 require './cards.rb'
 require './deck.rb'
 
+deck = []
+
+# Creates a brand new deck
 def create_deck
     all_cards = []
     # Hearts ♥
@@ -65,3 +68,8 @@ def create_deck
     all_cards << two_of_clubs = Card.new('2', 'clubs', 2, "♣")
     all_cards
 end
+
+# Reset Current Deck
+reset_deck = proc{
+    deck = Deck.new(create_deck)
+}
