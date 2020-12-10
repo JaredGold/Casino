@@ -12,6 +12,8 @@ banker_hand = []
 player_value = 0
 banker_value = 0
 game_loop = true
+prompt = TTY::Prompt.new
+blank_card = @card = TTY::Box.frame(width: 5, height: 4, align: :center, border: :thick,title: {top_left: " ? ", bottom_right: " ? "}) do "" end
 
 
 # Creates a brand new deck
@@ -105,3 +107,49 @@ update_hand_values = proc{
         sum += card.value
     end
 }
+
+def render_hand(banker_value, banker_renderer, player_value, player_renderer, update)
+    # Finds hand values
+    update.call
+
+    system('clear')
+    puts "Dealer's Cards"
+    puts banker_value
+    puts banker_renderer.render
+
+    puts "---------------------------"
+
+    puts "Your Cards"
+    puts player_value
+    puts player_renderer.render
+end
+
+draw_visible_hand = proc {
+    player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
+    player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
+    banker_table = TTY::Table.new([[banker_hand[0], banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
+    banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
+    
+    # render/draw table
+    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+}
+
+draw_hidden_hand = proc {
+    player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
+    player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
+    banker_table = TTY::Table.new([[blank_card, banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
+    banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
+    
+    # render/draw table
+    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+}
+
+# Creates Options - Hit, Stand, Exit
+def play_options(prompt)
+    choices = [
+        {name: "Hit", value: 1},
+        {name: "Stand", value: 2},
+        {name: "Exit", value: 3}
+    ]
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+end
