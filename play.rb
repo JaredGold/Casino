@@ -131,9 +131,7 @@ update_hand_values = proc{
 }
 
 # renders out the hands for blackjack
-def render_hand(banker_value, banker_renderer, player_value, player_renderer, update)
-    # Finds hand values
-    update.call
+def render_hand(banker_value, banker_renderer, player_value, player_renderer)
 
     system('clear')
     puts "Dealer's Cards"
@@ -154,8 +152,9 @@ draw_visible_hand = proc {
     banker_table = TTY::Table.new([[banker_hand[0], banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
     banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
     
+    update_hand_values.call
     # render/draw table
-    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer)
 }
 
 # Draws out hidden hand for blackjack
@@ -165,18 +164,19 @@ draw_hidden_hand = proc {
     banker_table = TTY::Table.new([[blank_card, banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
     banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
     
+    update_hand_values.call
     # render/draw table
-    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+    render_hand((banker_value - banker_hand[0].value), banker_multi_renderer, player_value, player_multi_renderer)
 }
 
 # Creates Options - Hit, Stand, Exit
 def play_options(prompt)
-    choices = [
+    choices = [[;p0-=]
         {name: "Hit", value: 1},
         {name: "Stand", value: 2},
         {name: "Exit", value: 3}
     ]
-    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
 end
 
 # asks gamble value
@@ -188,6 +188,15 @@ gamble_value = proc {
         bet = money
     end
     bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
+}
+
+money_check = proc{
+    if money <= 0
+        system('clear')
+        puts "YOU LOSE!"
+        sleep(2)
+        exit
+    end
 }
 
 
@@ -285,6 +294,30 @@ blackjack = proc {
         money += bet
         update_money_file.call
     end 
+
+
+    choices = [
+        {name: "Yes", value: 1},
+        {name: "No", value: 2},
+    ]
+    chosen_option = prompt.select("Would you like to replay Blackjack?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+
+    if chosen_option == 1
+        blackjack.call
+    elsif chosen_option == 2
+        choices = [
+            {name: "Return to Menu", value: 'menu'},
+            {name: "Quit", value: 'quit'},
+        ]
+        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+        if chosen_option == 'menu'
+            # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+            system('ruby play.rb')
+            exit
+        elsif chosen_option == 'quit'
+            exit
+        end
+    end
 
 }
 
