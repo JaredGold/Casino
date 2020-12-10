@@ -169,3 +169,13 @@ def play_options(prompt)
     ]
     chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
 end
+
+gamble_value = proc {
+    system('clear')
+    puts "Your balance is $#{money}"
+    puts "How much would you like to gamble?"
+    if bet > money
+        bet = money
+    end
+    bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
+}
