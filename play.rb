@@ -88,3 +88,20 @@ reset_hands = proc{
     banker_value = 0
     game_loop = true
 }
+
+deal_blackjack = proc {
+    deck.shuffle
+    player_hand << deck.draw_card
+    banker_hand << deck.draw_card
+    player_hand << deck.draw_card
+    banker_hand << deck.draw_card
+}
+
+update_hand_values = proc{
+    player_value = player_hand.reduce(0) do |sum , card|
+        sum += card.value
+    end
+    banker_value = banker_hand.reduce(0) do |sum , card|
+        sum += card.value
+    end
+}
