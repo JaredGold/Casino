@@ -131,9 +131,7 @@ update_hand_values = proc{
 }
 
 # renders out the hands for blackjack
-def render_hand(banker_value, banker_renderer, player_value, player_renderer, update)
-    # Finds hand values
-    update.call
+def render_hand(banker_value, banker_renderer, player_value, player_renderer)
 
     system('clear')
     puts "Dealer's Cards"
@@ -154,8 +152,9 @@ draw_visible_hand = proc {
     banker_table = TTY::Table.new([[banker_hand[0], banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
     banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
     
+    update_hand_values.call
     # render/draw table
-    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer)
 }
 
 # Draws out hidden hand for blackjack
@@ -165,8 +164,9 @@ draw_hidden_hand = proc {
     banker_table = TTY::Table.new([[blank_card, banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
     banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
     
+    update_hand_values.call
     # render/draw table
-    render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
+    render_hand((banker_value - banker_hand[0].value), banker_multi_renderer, player_value, player_multi_renderer)
 }
 
 # Creates Options - Hit, Stand, Exit
