@@ -177,7 +177,7 @@ draw_hidden_hand = proc {
 
 # Creates Options - Hit, Stand, Exit
 def play_options(prompt)
-    choices = [[;p0-=]
+    choices = [
         {name: "Hit", value: 1},
         {name: "Stand", value: 2},
         {name: "Exit", value: 3}
@@ -374,4 +374,12 @@ def start_menu(prompt, casino)
     end
 end
 
-blackjack.call
+# Main game loop
+game_option = start_menu(prompt, draw_casino)
+if game_option == 'bj'
+    blackjack.call
+elsif game_option == 2
+    puts "Game not Implimented yet"
+    puts "Please wait for update"
+    sleep(1)
+end
