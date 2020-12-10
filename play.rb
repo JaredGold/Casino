@@ -143,3 +143,13 @@ draw_hidden_hand = proc {
     # render/draw table
     render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
 }
+
+# Creates Options - Hit, Stand, Exit
+def play_options(prompt)
+    choices = [
+        {name: "Hit", value: 1},
+        {name: "Stand", value: 2},
+        {name: "Exit", value: 3}
+    ]
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+end
