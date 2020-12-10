@@ -11,6 +11,8 @@ player_hand = []
 banker_hand = []
 player_value = 0
 banker_value = 0
+money = load_money()
+bet = 0
 game_loop = true
 prompt = TTY::Prompt.new
 blank_card = @card = TTY::Box.frame(width: 5, height: 4, align: :center, border: :thick,title: {top_left: " ? ", bottom_right: " ? "}) do "" end
@@ -77,6 +79,20 @@ def create_deck
     all_cards << two_of_clubs = Card.new('2', 'clubs', 2, "♣")
     all_cards
 end
+
+def load_money()
+    money_val = File.open("money_val.txt")
+    money = money_val.read.to_i
+    if money == 0
+        money = 100
+    end
+    money_val.close
+    return money
+end
+
+update_money_file = proc{
+    money_file = File.write('money_val.txt', money.to_s)
+}
 
 # Reset Current Deck
 reset_deck = proc{
