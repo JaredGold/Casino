@@ -176,7 +176,7 @@ def play_options(prompt)
         {name: "Stand", value: 2},
         {name: "Exit", value: 3}
     ]
-    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
 end
 
 # asks gamble value
@@ -300,7 +300,7 @@ blackjack = proc {
         {name: "Yes", value: 1},
         {name: "No", value: 2},
     ]
-    chosen_option = prompt.select("Would you like to replay Blackjack?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+    chosen_option = prompt.select("Would you like to replay Blackjack?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
 
     if chosen_option == 1
         blackjack.call
@@ -309,7 +309,7 @@ blackjack = proc {
             {name: "Return to Menu", value: 'menu'},
             {name: "Quit", value: 'quit'},
         ]
-        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
         if chosen_option == 'menu'
             # IF YOU HAVE TO CHANGE THIS LATER DO SO!
             system('ruby play.rb')
