@@ -12,6 +12,8 @@ banker_hand = []
 player_value = 0
 banker_value = 0
 game_loop = true
+prompt = TTY::Prompt.new
+blank_card = @card = TTY::Box.frame(width: 5, height: 4, align: :center, border: :thick,title: {top_left: " ? ", bottom_right: " ? "}) do "" end
 
 
 # Creates a brand new deck
@@ -104,4 +106,48 @@ update_hand_values = proc{
     banker_value = banker_hand.reduce(0) do |sum , card|
         sum += card.value
     end
+}
+
+draw_visible_hand = proc {
+    player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
+    player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
+    banker_table = TTY::Table.new([[banker_hand[0], banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
+    banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
+    
+    # Finds Hand Values
+    update_hand_values.call
+
+    # Draw Hand
+    system('clear')
+    puts "Dealer's Cards"
+    puts banker_value
+    puts banker_multi_renderer.render
+
+    puts "---------------------------"
+
+    puts "Your Cards"
+    puts player_value
+    puts player_multi_renderer.render
+}
+
+draw_hidden_hand = proc {
+    player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
+    player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
+    banker_table = TTY::Table.new([[blank_card, banker_hand[1], banker_hand[2], banker_hand[3], banker_hand[4]]])
+    banker_multi_renderer = TTY::Table::Renderer::Basic.new(banker_table, multiline: true)
+    
+    # Finds Hand Values
+    update_hand_values.call
+
+    # Draw Hand
+    system('clear')
+    puts "Dealer's Cards"
+    puts banker_value - banker_hand[0].value
+    puts banker_multi_renderer.render
+
+    puts "---------------------------"
+
+    puts "Your Cards"
+    puts player_value
+    puts player_multi_renderer.render
 }
