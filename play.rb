@@ -191,3 +191,101 @@ gamble_value = proc {
 }
 
 
+blackjack = proc {
+    
+    gamble_value.call
+    reset_hands.call
+    reset_deck.call
+    deal_blackjack.call
+    draw_hidden_hand.call
+
+
+    # Gameplay Loop
+    while game_loop
+        # Gives Options (Hit, Stand, Exit)
+        user_choice = play_options(prompt)
+
+        case user_choice
+        when 1
+            # Gives Player a card
+            player_hand << deck.draw_card
+            draw_hidden_hand.call
+            
+            # Check for if loss state can be avoided
+            if player_value > 21
+                player_hand.each_with_index do |card , index|
+                    if card.kind_of?(Ace) && card.value == 11    
+                        card.value_change
+                        draw_hidden_hand.call
+                    end
+                end
+                if player_value > 21
+                    draw_visible_hand.call
+                    game_loop = false
+                end
+            end
+
+            user_choice = 0
+        when 2
+            while true
+                if banker_value < 17
+                    # Show player the hidden card and new banker value
+                    draw_visible_hand.call
+
+                    # Draw a new card for the banker and update the table and values
+                    banker_hand << deck.draw_card
+                    update_hand_values.call
+
+                    # Pause for effect!
+                    sleep(0.75)
+                else
+                    banker_hand.each_with_index do |card , index|
+                        if card.kind_of?(Ace) && card.value == 11    
+                            card.value_change
+                            draw_visible_hand.call
+                            break
+                        end
+                    end
+                    
+                    if banker_value >= 17
+                        break
+                    end  
+                end
+            end
+
+            draw_visible_hand.call
+            chosen_option = 0
+            game_loop = false
+        when 3
+            user_choice = 0
+            break
+        end
+    end
+
+
+
+    # Win Logic
+    sleep(1)
+    system('clear')
+    if banker_value > 21
+        puts "Congratulations you won $#{bet}!"
+        money += bet
+    elsif banker_value > player_value || player_value > 21
+        puts "You lost $#{bet}..."
+        money -= bet
+        update_money_file.call
+        if money <= 0
+            sleep (1)
+            money_check.call
+        end
+    elsif player_value == banker_value
+        puts "Draw"
+    else
+        puts "Congratulations you won $#{bet}!"
+        money += bet
+        update_money_file.call
+    end 
+
+}
+
+blackjack.call
