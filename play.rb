@@ -78,7 +78,7 @@ def create_deck
     all_cards << two_of_clubs = Card.new('2', 'clubs', 2, "♣")
     all_cards
 end
-
+# Loads money file
 def load_money()
     money_val = File.open("money_val.txt")
     money = money_val.read.to_i
@@ -89,8 +89,10 @@ def load_money()
     return money
 end
 
+# Load money on start
 money = load_money()
 
+# Writes to money file
 update_money_file = proc{
     money_file = File.write('money_val.txt', money.to_s)
 }
@@ -100,6 +102,7 @@ reset_deck = proc{
     deck = Deck.new(create_deck)
 }
 
+# reset's hands for blackjack
 reset_hands = proc{
     player_hand = []
     banker_hand = []
@@ -108,6 +111,7 @@ reset_hands = proc{
     game_loop = true
 }
 
+# deal hands for blackjack
 deal_blackjack = proc {
     deck.shuffle
     player_hand << deck.draw_card
@@ -116,6 +120,7 @@ deal_blackjack = proc {
     banker_hand << deck.draw_card
 }
 
+# update hand value for blackjack
 update_hand_values = proc{
     player_value = player_hand.reduce(0) do |sum , card|
         sum += card.value
@@ -125,6 +130,7 @@ update_hand_values = proc{
     end
 }
 
+# renders out the hands for blackjack
 def render_hand(banker_value, banker_renderer, player_value, player_renderer, update)
     # Finds hand values
     update.call
@@ -141,6 +147,7 @@ def render_hand(banker_value, banker_renderer, player_value, player_renderer, up
     puts player_renderer.render
 end
 
+# Draws the hands visually for blackjack
 draw_visible_hand = proc {
     player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
     player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
@@ -151,6 +158,7 @@ draw_visible_hand = proc {
     render_hand(banker_value, banker_multi_renderer, player_value, player_multi_renderer, update_hand_values)
 }
 
+# Draws out hidden hand for blackjack
 draw_hidden_hand = proc {
     player_table = TTY::Table.new([[player_hand[0], player_hand[1], player_hand[2], player_hand[3], player_hand[4]]])
     player_multi_renderer = TTY::Table::Renderer::Basic.new(player_table, multiline: true)
@@ -171,6 +179,7 @@ def play_options(prompt)
     chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
 end
 
+# asks gamble value
 gamble_value = proc {
     system('clear')
     puts "Your balance is $#{money}"
@@ -180,3 +189,5 @@ gamble_value = proc {
     end
     bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
 }
+
+
