@@ -190,6 +190,15 @@ gamble_value = proc {
     bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
 }
 
+money_check = proc{
+    if money <= 0
+        system('clear')
+        puts "YOU LOSE!"
+        sleep(2)
+        exit
+    end
+}
+
 
 blackjack = proc {
     
