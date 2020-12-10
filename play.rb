@@ -73,3 +73,4 @@ end
 reset_deck = proc{
     deck = Deck.new(create_deck)
 }
+
