@@ -11,7 +11,6 @@ player_hand = []
 banker_hand = []
 player_value = 0
 banker_value = 0
-money = load_money()
 bet = 0
 game_loop = true
 prompt = TTY::Prompt.new
@@ -89,6 +88,8 @@ def load_money()
     money_val.close
     return money
 end
+
+money = load_money()
 
 update_money_file = proc{
     money_file = File.write('money_val.txt', money.to_s)
