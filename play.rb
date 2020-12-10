@@ -5,6 +5,12 @@ require 'tty-prompt'
 require './cards.rb'
 require './deck.rb'
 
+# C
+#
+#
+#
+#
+
 # Variables
 deck = []
 player_hand = []
