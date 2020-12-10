@@ -171,7 +171,7 @@ draw_hidden_hand = proc {
 
 # Creates Options - Hit, Stand, Exit
 def play_options(prompt)
-    choices = [
+    choices = [[;p0-=]
         {name: "Hit", value: 1},
         {name: "Stand", value: 2},
         {name: "Exit", value: 3}
@@ -285,6 +285,30 @@ blackjack = proc {
         money += bet
         update_money_file.call
     end 
+
+
+    choices = [
+        {name: "Yes", value: 1},
+        {name: "No", value: 2},
+    ]
+    chosen_option = prompt.select("Would you like to replay Blackjack?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+
+    if chosen_option == 1
+        blackjack.call
+    elsif chosen_option == 2
+        choices = [
+            {name: "Return to Menu", value: 'menu'},
+            {name: "Quit", value: 'quit'},
+        ]
+        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keybvoard keys)", show_help: :start, filter: true)
+        if chosen_option == 'menu'
+            # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+            system('ruby play.rb')
+            exit
+        elsif chosen_option == 'quit'
+            exit
+        end
+    end
 
 }
 
