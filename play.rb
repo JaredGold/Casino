@@ -5,7 +5,14 @@ require 'tty-prompt'
 require './cards.rb'
 require './deck.rb'
 
+# Variables
 deck = []
+player_hand = []
+banker_hand = []
+player_value = 0
+banker_value = 0
+game_loop = true
+
 
 # Creates a brand new deck
 def create_deck
@@ -74,3 +81,10 @@ reset_deck = proc{
     deck = Deck.new(create_deck)
 }
 
+reset_hands = proc{
+    player_hand = []
+    banker_hand = []
+    player_value = 0
+    banker_value = 0
+    game_loop = true
+}
