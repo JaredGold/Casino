@@ -2,6 +2,8 @@
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
+require 'ascii_charts'
+require 'timeout'
 require './cards.rb'
 require './deck.rb'
 
@@ -16,6 +18,10 @@ bet = 0
 game_loop = true
 prompt = TTY::Prompt.new
 blank_card = @card = TTY::Box.frame(width: 5, height: 4, align: :center, border: :thick,title: {top_left: " ? ", bottom_right: " ? "}) do "" end
+crash_x = 0.2
+crash_y = ''
+crash_start_array = [[crash_y, crash_x]]
+crash_array = crash_start_array
 
 
 # Creates a brand new deck
@@ -112,6 +118,15 @@ reset_hands = proc{
     game_loop = true
 }
 
+# reset crash variables
+reset_crash = proc {
+    crash_x = 0.2
+    crash_y = ''
+    crash_start_array = [[crash_y, crash_x]]
+    crash_array = crash_start_array
+
+}
+
 # deal hands for blackjack
 deal_blackjack = proc {
     deck.shuffle
@@ -192,11 +207,14 @@ gamble_value = proc {
 }
 
 money_check = proc{
-    if money <= 0
+    if money <= 10
         system('clear')
+        puts "You dropped below $10 you had $#{money}"
         puts "YOU LOSE!"
         sleep(2)
-        exit
+        puts "Money reset to $10"
+        money = 10
+        update_money_file.call
     end
 }
 
@@ -369,12 +387,103 @@ def start_menu(prompt, casino)
     end
 end
 
-# Main game loop
+
+
+
+
+crash = proc{
+    reset_crash.call
+    gamble_value.call
+    crash_loop = true
+    while crash_loop
+
+    odds = [(1..30).to_a.sample, (1..20).to_a.sample, (1..15).to_a.sample, (1..10).to_a.sample]
+
+    if crash_x < 1
+        chance = odds[0]
+    elsif crash_x < 3
+        chance = odds[1]
+    elsif crash_x < 10
+        chance = odds[2]
+    else
+        chance = odds[3]
+    end
+
+    puts chance
+
+    if chance != 1
+
+        system('clear')
+        puts AsciiCharts::Cartesian.new(crash_array, :title => "YOUR MONEY").draw
+        puts crash_x
+
+        begin
+            status = Timeout::timeout(0.4){
+                gets.chomp
+                crash_loop = false
+            }
+        rescue Timeout::Error
+        end
+
+        crash_x *= 1.1
+        crash_x = crash_x.round(2)
+        crash_array << [crash_y, crash_x]
+
+        crash_array.shift if crash_array.length == 11
+    else
+        puts "YOU LOSE"
+        crash_x = 0
+        crash_loop = false
+    end
+end
+
+if crash_x == 0
+    puts "You lost $#{bet}"
+    money = money - bet
+    update_money_file.call
+elsif crash_x < 1
+    puts "You only received $#{(crash_x * bet).round(0)}..."
+    money = (money - bet) + (crash_x * bet)
+    update_money_file.call
+else
+    puts "You won $#{(crash_x * bet).round(0)}!"
+    money = (money - bet) + (crash_x * bet)
+    update_money_file.call
+end
+
+money_check.call
+
+choices = [
+    {name: "Yes", value: 1},
+    {name: "No", value: 2},
+]
+chosen_option = prompt.select("Would you like to play Crash again?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+
+if chosen_option == 1
+    crash.call
+elsif chosen_option == 2
+    choices = [
+        {name: "Return to Menu", value: 'menu'},
+        {name: "Quit", value: 'quit'},
+    ]
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+    if chosen_option == 'menu'
+        # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+        system('ruby play.rb')
+        exit
+    elsif chosen_option == 'quit'
+        exit
+    end
+end
+
+}
+
+
+#Main game loop
 game_option = start_menu(prompt, draw_casino)
 if game_option == 'bj'
     blackjack.call
 elsif game_option == 2
-    puts "Game not Implimented yet"
-    puts "Please wait for update"
+    crash.call
     sleep(1)
 end
