@@ -390,8 +390,6 @@ crash_loop = true
 
 gamble_value.call
 
-system('clear')
-puts AsciiCharts::Cartesian.new(crash_array, :title => "YOUR MONEY").draw
 
 
 while crash_loop
@@ -409,4 +407,31 @@ while crash_loop
     end
 
     puts chance
+
+    if chance != 1
+
+        system('clear')
+        puts AsciiCharts::Cartesian.new(crash_array, :title => "YOUR MONEY").draw
+        puts crash_x
+
+        begin
+            status = Timeout::timeout(0.4){
+                gets.chomp
+                crash_loop = false
+            }
+        rescue Timeout::Error
+        end
+
+        crash_x *= 1.1
+        crash_x = crash_x.round(2)
+        crash_array << [crash_y, crash_x]
+
+        crash_array.shift if crash_array.length == 11
+    else
+        puts "YOU LOSE"
+        crash_x = 0
+        crash_loop = false
+    end
 end
+
+puts "You won $#{(bet * crash_x).round(2)}"
