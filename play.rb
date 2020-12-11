@@ -392,3 +392,21 @@ gamble_value.call
 
 system('clear')
 puts AsciiCharts::Cartesian.new(crash_array, :title => "YOUR MONEY").draw
+
+
+while crash_loop
+
+    odds = [(1..30).to_a.sample, (1..20).to_a.sample, (1..15).to_a.sample, (1..10).to_a.sample]
+
+    if crash_x < 1
+        chance = odds[0]
+    elsif crash_x < 3
+        chance = odds[1]
+    elsif crash_x < 10
+        chance = odds[2]
+    else
+        chance = odds[3]
+    end
+
+    puts chance
+end
