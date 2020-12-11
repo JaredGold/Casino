@@ -2,6 +2,8 @@
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
+require 'ascii_charts'
+require 'timeout'
 require './cards.rb'
 require './deck.rb'
 
@@ -370,11 +372,23 @@ def start_menu(prompt, casino)
 end
 
 # Main game loop
-game_option = start_menu(prompt, draw_casino)
-if game_option == 'bj'
-    blackjack.call
-elsif game_option == 2
-    puts "Game not Implimented yet"
-    puts "Please wait for update"
-    sleep(1)
-end
+# game_option = start_menu(prompt, draw_casino)
+# if game_option == 'bj'
+#     blackjack.call
+# elsif game_option == 2
+#     puts "Game not Implimented yet"
+#     puts "Please wait for update"
+#     sleep(1)
+# end
+
+crash_x = 0.2
+crash_y = ''
+crash_start_array = [[crash_y, crash_x]]
+crash_array = crash_start_array
+
+crash_loop = true
+
+gamble_value.call
+
+system('clear')
+puts AsciiCharts::Cartesian.new(crash_array, :title => "YOUR MONEY").draw
