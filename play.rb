@@ -1,4 +1,4 @@
-# Initialisation
+# # Initialisation
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
@@ -371,7 +371,8 @@ def start_menu(prompt, casino)
         casino.call
         choices = [
             {name: "Blackjack", value: 'bj'},
-            {name: "Game 2", value: 2},
+            {name: "Crash", value: 'cr'},
+            {name: "Horse Racing", value: 'hr'},
             {name: "Back", value: 3}
         ]
         chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keybvoard Arrow keys)", show_help: :start, filter: true)
@@ -383,7 +384,7 @@ def start_menu(prompt, casino)
     elsif chosen_option == 'help'
         puts "option 2"
     elsif chosen_option == 'exit'
-        puts "option 3"
+        exit
     end
 end
 
@@ -430,51 +431,51 @@ crash = proc{
         crash_array << [crash_y, crash_x]
 
         crash_array.shift if crash_array.length == 11
+        else
+            puts "YOU LOSE"
+            crash_x = 0
+            crash_loop = false
+        end
+    end
+
+    if crash_x == 0
+        puts "You lost $#{bet}"
+        money = money - bet
+        update_money_file.call
+    elsif crash_x < 1
+        puts "You only received $#{(crash_x * bet).round(0)}..."
+        money = (money - bet) + (crash_x * bet)
+        update_money_file.call
     else
-        puts "YOU LOSE"
-        crash_x = 0
-        crash_loop = false
+        puts "You won $#{(crash_x * bet).round(0)}!"
+        money = (money - bet) + (crash_x * bet)
+        update_money_file.call
     end
-end
 
-if crash_x == 0
-    puts "You lost $#{bet}"
-    money = money - bet
-    update_money_file.call
-elsif crash_x < 1
-    puts "You only received $#{(crash_x * bet).round(0)}..."
-    money = (money - bet) + (crash_x * bet)
-    update_money_file.call
-else
-    puts "You won $#{(crash_x * bet).round(0)}!"
-    money = (money - bet) + (crash_x * bet)
-    update_money_file.call
-end
+    money_check.call
 
-money_check.call
-
-choices = [
-    {name: "Yes", value: 1},
-    {name: "No", value: 2},
-]
-chosen_option = prompt.select("Would you like to play Crash again?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
-
-if chosen_option == 1
-    crash.call
-elsif chosen_option == 2
     choices = [
-        {name: "Return to Menu", value: 'menu'},
-        {name: "Quit", value: 'quit'},
+        {name: "Yes", value: 1},
+        {name: "No", value: 2},
     ]
-    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
-    if chosen_option == 'menu'
-        # IF YOU HAVE TO CHANGE THIS LATER DO SO!
-        system('ruby play.rb')
-        exit
-    elsif chosen_option == 'quit'
-        exit
+    chosen_option = prompt.select("Would you like to play Crash again?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+
+    if chosen_option == 1
+        crash.call
+    elsif chosen_option == 2
+        choices = [
+            {name: "Return to Menu", value: 'menu'},
+            {name: "Quit", value: 'quit'},
+        ]
+        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+        if chosen_option == 'menu'
+            # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+            system('ruby play.rb')
+            exit
+        elsif chosen_option == 'quit'
+            exit
+        end
     end
-end
 
 }
 
@@ -483,7 +484,9 @@ end
 game_option = start_menu(prompt, draw_casino)
 if game_option == 'bj'
     blackjack.call
-elsif game_option == 2
+elsif game_option == 'cr'
     crash.call
-    sleep(1)
+elsif game_option == 'hr'
+    system('ruby horse_race.rb')
 end
+
