@@ -1,11 +1,11 @@
 # Ideas
-- Horse Races
+- Horse Races (DONE!)
 - Coin Flips
     or
 - Roulette
 - Slot Machine
 - Poker
-- Crash - CSGO
+- Crash - CSGO (DONE!)
 - THE OTHER CSGO GAMBLING THING WHERE EVERYONE DUMPS MONEY AND ONE WINNER WINS ALL
 
 # Errors

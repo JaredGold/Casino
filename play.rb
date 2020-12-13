@@ -203,7 +203,17 @@ gamble_value = proc {
     if bet > money
         bet = money
     end
-    bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
+    if money <= 300
+        bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
+    else
+        print 'Ammount: $'
+        bet = gets.chomp.to_i
+        if bet <= 0
+            puts "Invalid amount"
+            sleep('0.4')
+            gamble_value.call
+        end
+    end
 }
 
 money_check = proc{
