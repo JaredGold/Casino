@@ -16,12 +16,12 @@ c5 = 0
 c6 = 0
 
 # Horse winner bool
-a1 = false
-a2 = false
-a3 = false
-a4 = false
-a5 = false
-a6 = false
+king = false
+colt = false
+buck = false
+tank = false
+argo = false
+nero = false
 
 def wait()
   time = rand(0.01..0.15)
@@ -41,22 +41,22 @@ horses.on(:done) {puts "Done"}
 
 horses.on(:stopped) {
   if c1 == 75
-    a1 = true
+    king = true
     reset_counters.call
   elsif c2 == 75
-    a2 = true
+    colt = true
     reset_counters.call
   elsif c3 == 75
-    a3 = true
+    buck = true
     reset_counters.call
   elsif c4 == 75
-    a4 = true
+    tank = true
     reset_counters.call
   elsif c5 == 75
-    a5 = true
+    argo = true
     reset_counters.call
   elsif c6 == 75
-    a6 = true
+    nero = true
     reset_counters.call
   end
 }
@@ -79,16 +79,16 @@ th6 = Thread.new { 75.times {wait() ; bar6.advance ; c6 += 1 ; horses.stop if c6
 [th1, th2, th3, th4, th5, th6].each { |t| t.join }
 
 
-if a1
+if king
   puts 'King won'
-elsif a2
+elsif colt
   puts 'Colt won'
-elsif a3
+elsif buck
   puts 'Buck won'
-elsif a4
+elsif tank
   puts 'Tank won'
-elsif a5
+elsif argo
   puts 'Argo won'
-elsif a6
+elsif nero
   puts 'Nero won'
 end
