@@ -2,9 +2,6 @@ require "tty-progressbar"
 require "pastel"
 
 pastel = Pastel.new
-green  = pastel.on_green(" ")
-red    = pastel.on_red(" ")
-blue    = pastel.on_blue(" ")
 horses = TTY::ProgressBar::Multi.new
 
 # Counter Variable
@@ -37,6 +34,8 @@ reset_counters = proc{
   c6 = 0
 }
 
+system('clear')
+
 horses.on(:done) {puts "Done"}
 
 horses.on(:stopped) {
@@ -61,12 +60,12 @@ horses.on(:stopped) {
   end
 }
 
-bar1 = horses.register("King [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
-bar2 = horses.register("Colt [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
-bar3 = horses.register("Buck [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
-bar4 = horses.register("Tank [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
-bar5 = horses.register("Argo [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
-bar6 = horses.register("Nero [:bar]", head: ">", total: 75)#, complete: green, incomplete: red)
+bar1 = horses.register("#{pastel.red('King')} [:bar]", head: "#{pastel.red('>')}", total: 75)#, complete: green, incomplete: red)
+bar2 = horses.register("#{pastel.green('Colt')} [:bar]", head: "#{pastel.green('>')}", total: 75)#, complete: green, incomplete: red)
+bar3 = horses.register("#{pastel.blue('Buck')} [:bar]", head: "#{pastel.blue('>')}", total: 75)#, complete: green, incomplete: red)
+bar4 = horses.register("#{pastel.bright_magenta('Tank')} [:bar]", head: "#{pastel.bright_magenta('>')}", total: 75)#, complete: green, incomplete: red)
+bar5 = horses.register("#{pastel.yellow('Argo')} [:bar]", head: "#{pastel.yellow('>')}", total: 75)#, complete: green, incomplete: red)
+bar6 = horses.register("#{pastel.cyan('Nero')} [:bar]", head: "#{pastel.cyan('>')}", total: 75)#, complete: green, incomplete: red)
 
 th1 = Thread.new { 75.times {wait() ; bar1.advance ; c1 += 1 ; horses.stop if c1 == 75} } 
 th2 = Thread.new { 75.times {wait() ; bar2.advance ; c2 += 1 ; horses.stop if c2 == 75} }
@@ -80,15 +79,15 @@ th6 = Thread.new { 75.times {wait() ; bar6.advance ; c6 += 1 ; horses.stop if c6
 
 
 if king
-  puts 'King won'
+  puts "\n#{pastel.red('King')} won"
 elsif colt
-  puts 'Colt won'
+  puts "\n#{pastel.green('Colt')} won"
 elsif buck
-  puts 'Buck won'
+  puts "\n#{pastel.blue('Buck')} won"
 elsif tank
-  puts 'Tank won'
+  puts "\n#{pastel.bright_magenta('Tank')} won"
 elsif argo
-  puts 'Argo won'
+  puts "\n#{pastel.yellow('Argo')} won"
 elsif nero
-  puts 'Nero won'
+  puts "\n#{pastel.cyan('Nero')} won"
 end
