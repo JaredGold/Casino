@@ -371,7 +371,7 @@ def start_menu(prompt, casino)
         casino.call
         choices = [
             {name: "Blackjack", value: 'bj'},
-            {name: "Game 2", value: 2},
+            {name: "Crash", value: 2},
             {name: "Back", value: 3}
         ]
         chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keybvoard Arrow keys)", show_help: :start, filter: true)
