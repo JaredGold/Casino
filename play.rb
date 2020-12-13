@@ -371,7 +371,8 @@ def start_menu(prompt, casino)
         casino.call
         choices = [
             {name: "Blackjack", value: 'bj'},
-            {name: "Crash", value: 2},
+            {name: "Crash", value: 'cr'},
+            {name: "Horse Racing", value: 'hr'},
             {name: "Back", value: 3}
         ]
         chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keybvoard Arrow keys)", show_help: :start, filter: true)
@@ -483,8 +484,9 @@ crash = proc{
 game_option = start_menu(prompt, draw_casino)
 if game_option == 'bj'
     blackjack.call
-elsif game_option == 2
+elsif game_option == 'cr'
     crash.call
-    sleep(1)
+elsif game_option == 'hr'
+    system('ruby horse_race.rb')
 end
 
