@@ -1,4 +1,4 @@
-# Initialisation
+# # Initialisation
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
@@ -383,7 +383,7 @@ def start_menu(prompt, casino)
     elsif chosen_option == 'help'
         puts "option 2"
     elsif chosen_option == 'exit'
-        puts "option 3"
+        exit
     end
 end
 
@@ -479,11 +479,21 @@ end
 }
 
 
-#Main game loop
-game_option = start_menu(prompt, draw_casino)
-if game_option == 'bj'
-    blackjack.call
-elsif game_option == 2
-    crash.call
-    sleep(1)
+# #Main game loop
+# game_option = start_menu(prompt, draw_casino)
+# if game_option == 'bj'
+#     blackjack.call
+# elsif game_option == 2
+#     crash.call
+#     sleep(1)
+# end
+
+bar = TTY::ProgressBar.new("downloading [:bar]", total: 100)
+30.times do
+  sleep(0.1)
+  bar.advance(1)
+end
+30.times do
+    sleep(0.1)
+    bar.advance(-1)
 end
