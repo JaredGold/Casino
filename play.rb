@@ -432,7 +432,7 @@ def start_menu(prompt, casino)
         {name: "Help", value: 'help'},
         {name: "Exit", value: 'exit'}
     ]
-    chosen_option = prompt.select("What would you like?", choices, help_color: :yellow, help: "(Use Keybvoard Arrow keys)", show_help: :start, filter: true)
+    chosen_option = prompt.select("What would you like?", choices, help_color: :yellow, help: "(Use Keyboard Arrow keys)", show_help: :start, filter: true)
     
     if chosen_option == 'games'
         system('clear')
@@ -443,7 +443,7 @@ def start_menu(prompt, casino)
             {name: "Horse Racing", value: 'hr'},
             {name: "Back", value: 3}
         ]
-        chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keybvoard Arrow keys)", show_help: :start, filter: true)
+        chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keyboard Arrow keys)", show_help: :start, filter: true)
         if chosen_option == 3
             start_menu(prompt, casino)
         else
@@ -479,7 +479,7 @@ crash = proc{
     crash_loop = true
     while crash_loop
 
-    odds = [(1..30).to_a.sample, (1..25).to_a.sample, (1..20).to_a.sample, (1..15).to_a.sample]
+    odds = [(1..50).to_a.sample, (1..40).to_a.sample, (1..30).to_a.sample, (1..20).to_a.sample]
 
     if crash_x < 1
         chance = odds[0]
