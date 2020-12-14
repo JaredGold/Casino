@@ -24,6 +24,43 @@ update_money_file = proc{
   money_file = File.write('money_val.txt', money.to_s)
 }
 
+money_check = proc{
+  if money <= 10
+      system('clear')
+      puts "You dropped below $10 you had $#{money}"
+      puts "YOU LOSE!"
+      sleep(2)
+      puts "Money reset to $10"
+      money = 10
+      update_money_file.call
+  end
+}
+
+exit_options = proc{
+  choices = [
+      {name: "Return to Menu", value: 'menu'},
+      {name: "Quit", value: 'quit'},
+  ]
+  chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+  if chosen_option == 'menu'
+      # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+      system('ruby play.rb')
+      exit
+  elsif chosen_option == 'quit'
+      system('clear')
+      exit
+  end
+}
+
+def game_menu_options(prompt)
+  choices = [
+      {name: "Play", value: 1},
+      {name: "Rules", value: 2},
+      {name: "Exit", value: 3}
+  ]
+  chosen_option = prompt.select("", choices, help_color: :dim, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+end
+
 gamble_value = proc {
   system('clear')
   puts "Your balance is $#{money}"
@@ -78,6 +115,14 @@ def wait()
   sleep(time)
 end
 
+def races_title()
+  puts"
+  _  _ ____ ____ ____ ____    ____ ____ ____ ____ 
+  |__| |  | |__/ [__  |___    |__/ |__| |    |___ 
+  |  | |__| |  \\ ___] |___    |  \\ |  | |___ |___ 
+  "
+end
+
 reset_counters = proc{
   c1 = 0
   c2 = 0
@@ -85,9 +130,21 @@ reset_counters = proc{
   c4 = 0
   c5 = 0
   c6 = 0
+
+  king = false
+  colt = false
+  buck = false
+  tank = false
+  argo = false
+  nero = false
 }
 
 horse_race = proc{
+  system('clear')
+  reset_counters.call
+  gamble_value.call
+  player_horse = horse_choices(prompt, pastel)
+
   horses.on(:done) {puts "Done"}
 
   horses.on(:stopped) {
@@ -152,8 +209,46 @@ horse_race = proc{
     money = money - bet
     update_money_file.call
   end
+
+  money_check.call
+
+  choices = [
+    {name: "Yes", value: 1},
+    {name: "No", value: 2},
+  ]
+  chosen_option = prompt.select("Would you like to replay Horse Races?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+
+  if chosen_option == 1
+      horse_race.call
+  elsif chosen_option == 2
+      exit_options.call
+  end
 }
 
-gamble_value.call
-player_horse = horse_choices(prompt, pastel)
-horse_race.call
+def hr_rules(menu)
+  system('clear')
+  puts "Goal: "
+  puts "Pick a winning horse!"
+  puts "\nHow to Play: "
+  puts "Choose a horse at the start and watch the races"
+  puts "If your horse wins you win your bet times 6"
+  puts "\n----------------------------------------------------------------------------"
+  puts "\nPress return to go back"
+  x = gets.chomp
+  menu.call
+end
+
+hr_menu = proc{
+  system('clear')
+  races_title()
+  chosen_option = game_menu_options(prompt)
+  if chosen_option == 1
+    horse_race.call
+  elsif chosen_option == 2
+    hr_rules(hr_menu)
+  else
+    exit_options.call
+  end
+}
+
+hr_menu.call
