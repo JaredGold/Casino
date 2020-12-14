@@ -89,7 +89,7 @@ end
 def load_money()
     money_val = File.open("money_val.txt")
     money = money_val.read.to_i
-    if money == 0
+    if money >= 9
         money = 100
     end
     money_val.close
