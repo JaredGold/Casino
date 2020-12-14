@@ -127,6 +127,22 @@ reset_crash = proc {
 
 }
 
+exit_options = proc{
+    choices = [
+        {name: "Return to Menu", value: 'menu'},
+        {name: "Quit", value: 'quit'},
+    ]
+    chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+    if chosen_option == 'menu'
+        # IF YOU HAVE TO CHANGE THIS LATER DO SO!
+        system('ruby play.rb')
+        exit
+    elsif chosen_option == 'quit'
+        system('clear')
+        exit
+    end
+}
+
 # deal hands for blackjack
 deal_blackjack = proc {
     deck.shuffle
@@ -228,16 +244,7 @@ money_check = proc{
     end
 }
 
-blackjack_menu = proc{
-    system('clear')
-    blackjack_title.call
-    choices = [
-        {name: "Play", value: 1},
-        {name: "Rules", value: 2},
-        {name: "Exit", value: 3}
-    ]
-    chosen_option = prompt.select("", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
-}
+
 
 blackjack = proc {
     
@@ -344,22 +351,49 @@ blackjack = proc {
     if chosen_option == 1
         blackjack.call
     elsif chosen_option == 2
-        choices = [
-            {name: "Return to Menu", value: 'menu'},
-            {name: "Quit", value: 'quit'},
-        ]
-        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
-        if chosen_option == 'menu'
-            # IF YOU HAVE TO CHANGE THIS LATER DO SO!
-            system('ruby play.rb')
-            exit
-        elsif chosen_option == 'quit'
-            system('clear')
-            exit
-        end
+        exit_options.call
     end
 
 }
+
+blackjack_menu = proc{
+    system('clear')
+    blackjack_title()
+    chosen_option = game_menu_options(prompt)
+    if chosen_option == 1
+        blackjack.call
+    elsif chosen_option == 2
+        blackjack_rules(blackjack_menu)
+    else
+        exit_options.call
+    end
+}
+
+def game_menu_options(prompt)
+    choices = [
+        {name: "Play", value: 1},
+        {name: "Rules", value: 2},
+        {name: "Exit", value: 3}
+    ]
+    chosen_option = prompt.select("", choices, help_color: :dim, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+end
+
+def blackjack_rules(menu)
+    system('clear')
+    puts "Goal: "
+    puts "The goal of blackjack is to beat the dealers hand without going over 21"
+    puts "Picture Cards are worth 10 and Aces are worth 11 or 1."
+    puts "\nHow to Play: "
+    puts "At the start of the game you are shown 2 cards of yours and 1 of the dealer"
+    puts "You have the choice to get another card (hit) or stand"
+    puts "If you choose to hit and go over 21 you immediately lose."
+    puts "You then have a choice to continue going. When you finally stand the dealer"
+    puts "then goes until they are between 17-21"
+    puts "\n----------------------------------------------------------------------------"
+    puts "\nPress return to go back"
+    x = gets.chomp
+    menu.call
+end
 
 casino_title = proc{
     puts " 
@@ -374,15 +408,17 @@ casino_title = proc{
                                                                    "
 }
 
-# blackjack_title()
-#     puts "
-#     ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗
-#     ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝
-#     ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝ 
-#     ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗ 
-#     ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗
-#     ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝"
-# end
+def blackjack_title()
+    puts "
+    ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗
+    ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝
+    ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝ 
+    ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗ 
+    ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗
+    ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝"
+end
+
+
 
 # Start Menu
 def start_menu(prompt, casino)
@@ -507,33 +543,62 @@ crash = proc{
     if chosen_option == 1
         crash.call
     elsif chosen_option == 2
-        choices = [
-            {name: "Return to Menu", value: 'menu'},
-            {name: "Quit", value: 'quit'},
-        ]
-        chosen_option = prompt.select("What would you like to do?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
-        if chosen_option == 'menu'
-            # IF YOU HAVE TO CHANGE THIS LATER DO SO!
-            system('ruby play.rb')
-            exit
-        elsif chosen_option == 'quit'
-            system('clear')
-            exit
-        end
+        exit_options.call
     end
 
 }
+
+def crash_title()
+    puts " 
+    ▄████▄   ██▀███   ▄▄▄        ██████  ██░ ██ 
+    ▒██▀ ▀█  ▓██ ▒ ██▒▒████▄    ▒██    ▒ ▓██░ ██▒
+    ▒▓█    ▄ ▓██ ░▄█ ▒▒██  ▀█▄  ░ ▓██▄   ▒██▀▀██░
+    ▒▓▓▄ ▄██▒▒██▀▀█▄  ░██▄▄▄▄██   ▒   ██▒░▓█ ░██ 
+    ▒ ▓███▀ ░░██▓ ▒██▒ ▓█   ▓██▒▒██████▒▒░▓█▒░██▓
+    ░ ░▒ ▒  ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒
+      ░  ▒     ░▒ ░ ▒░  ▒   ▒▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░
+    ░          ░░   ░   ░   ▒   ░  ░  ░   ░  ░░ ░
+    ░ ░         ░           ░  ░      ░   ░  ░  ░
+    ░                                            "
+end
+
+crash_menu = proc{
+    system('clear')
+    crash_title()
+    chosen_option = game_menu_options(prompt)
+    if chosen_option == 1
+        crash.call
+    elsif chosen_option == 2
+        crash_rules(crash_menu)
+    else
+        exit_options.call
+    end
+
+}
+
+def crash_rules(menu)
+    system('clear')
+    puts "Goal: "
+    puts "The goal of Crash is to get out before it's too late!"
+    puts "Slowly the stocks will grow but at any point they can crash."
+    puts "If you have not backed out before then you lose your entire bet."
+    puts "\nHow to Play: "
+    puts "After choosing a bet amount you will watch the market grow."
+    puts "At any point you can press return to accept the market value."
+    puts "You receive the market value times your bet."
+    puts "\n----------------------------------------------------------------------------"
+    puts "\nPress return to go back"
+    x = gets.chomp
+    menu.call
+end
 
 
 #Main game loop
 game_option = start_menu(prompt, casino_title)
 if game_option == 'bj'
-    # blackjack_title()
-    # blackjack_menu.call
-    blackjack.call
+    blackjack_menu.call
 elsif game_option == 'cr'
-    crash.call
+    crash_menu.call
 elsif game_option == 'hr'
     system('ruby horse_race.rb')
 end
-
