@@ -228,6 +228,16 @@ money_check = proc{
     end
 }
 
+blackjack_menu = proc{
+    system('clear')
+    blackjack_title.call
+    choices = [
+        {name: "Play", value: 1},
+        {name: "Rules", value: 2},
+        {name: "Exit", value: 3}
+    ]
+    chosen_option = prompt.select("", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+}
 
 blackjack = proc {
     
@@ -344,13 +354,14 @@ blackjack = proc {
             system('ruby play.rb')
             exit
         elsif chosen_option == 'quit'
+            system('clear')
             exit
         end
     end
 
 }
 
-draw_casino = proc{
+casino_title = proc{
     puts " 
     ▄████████    ▄████████    ▄████████  ▄█  ███▄▄▄▄    ▄██████▄  
     ███    ███   ███    ███   ███    ███ ███  ███▀▀▀██▄ ███    ███ 
@@ -362,6 +373,16 @@ draw_casino = proc{
     ████████▀    ███    █▀   ▄████████▀  █▀    ▀█   █▀   ▀██████▀  
                                                                    "
 }
+
+# blackjack_title()
+#     puts "
+#     ██████╗ ██╗      █████╗  ██████╗██╗  ██╗     ██╗ █████╗  ██████╗██╗  ██╗
+#     ██╔══██╗██║     ██╔══██╗██╔════╝██║ ██╔╝     ██║██╔══██╗██╔════╝██║ ██╔╝
+#     ██████╔╝██║     ███████║██║     █████╔╝      ██║███████║██║     █████╔╝ 
+#     ██╔══██╗██║     ██╔══██║██║     ██╔═██╗ ██   ██║██╔══██║██║     ██╔═██╗ 
+#     ██████╔╝███████╗██║  ██║╚██████╗██║  ██╗╚█████╔╝██║  ██║╚██████╗██║  ██╗
+#     ╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝"
+# end
 
 # Start Menu
 def start_menu(prompt, casino)
@@ -392,14 +413,27 @@ def start_menu(prompt, casino)
             return chosen_option
         end   
     elsif chosen_option == 'help'
-        puts "option 2"
+        main_help()
     elsif chosen_option == 'exit'
+        system('clear')
         exit
     end
 end
 
 
-
+def main_help()
+    system('clear')
+    puts "Welcome to Casino!"
+    puts "\nIn Casino the main goal is to make as much money as possible and have fun!"
+    puts "There are currently 3 games you can play, Blackjack, Crash and Horse Racing."
+    puts "Each game has it's own Rules so if you want to read more do so in those games."
+    puts "\nRemember this is just a game. If you do find gambling addictive, please seek"
+    puts "professional help and read more at https://www.gamblinghelponline.org.au/"
+    puts "\n-------------------------------------------------------------------------"
+    puts "\nPress return to go back"
+    wait = gets.chomp
+    system('ruby play.rb')
+end
 
 
 crash = proc{
@@ -483,6 +517,7 @@ crash = proc{
             system('ruby play.rb')
             exit
         elsif chosen_option == 'quit'
+            system('clear')
             exit
         end
     end
@@ -491,8 +526,10 @@ crash = proc{
 
 
 #Main game loop
-game_option = start_menu(prompt, draw_casino)
+game_option = start_menu(prompt, casino_title)
 if game_option == 'bj'
+    # blackjack_title()
+    # blackjack_menu.call
     blackjack.call
 elsif game_option == 'cr'
     crash.call
