@@ -6,7 +6,7 @@ pastel = Pastel.new
 horses = TTY::ProgressBar::Multi.new
 prompt = TTY::Prompt.new
 bet = 0
-player_horse = ""
+player_horse = ''
 
 def load_money()
   money_val = File.open("money_val.txt")
@@ -130,7 +130,9 @@ reset_counters = proc{
   c4 = 0
   c5 = 0
   c6 = 0
+}
 
+reset_horses = proc{ 
   king = false
   colt = false
   buck = false
@@ -142,10 +144,11 @@ reset_counters = proc{
 horse_race = proc{
   system('clear')
   reset_counters.call
+  reset_horses.call
   gamble_value.call
   player_horse = horse_choices(prompt, pastel)
 
-  horses.on(:done) {puts "Done"}
+  # horses.on(:done) {puts "Done"}
 
   horses.on(:stopped) {
     if c1 == 75
@@ -183,8 +186,10 @@ horse_race = proc{
   th5 = Thread.new { 75.times {wait() ; bar5.advance ; c5 += 1 ; horses.stop if c5 == 75} }
   th6 = Thread.new { 75.times {wait() ; bar6.advance ; c6 += 1 ; horses.stop if c6 == 75} }
 
+  
 
-  [th1, th2, th3, th4, th5, th6].each { |t| t.join }
+  [th1, th2, th3, th4, th5, th6].each { |t| t.join ; t.exit}
+
 
   win_procedure = proc{
     puts "Congratulations! You won $#{bet * 6}"
