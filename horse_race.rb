@@ -144,5 +144,3 @@ horse_race = proc{
 gamble_value.call
 player_horse = horse_choices(prompt, pastel)
 horse_race.call
-
-

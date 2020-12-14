@@ -89,7 +89,7 @@ end
 def load_money()
     money_val = File.open("money_val.txt")
     money = money_val.read.to_i
-    if money >= 9
+    if money <= 9
         money = 100
     end
     money_val.close
@@ -381,14 +381,15 @@ end
 def blackjack_rules(menu)
     system('clear')
     puts "Goal: "
-    puts "The goal of blackjack is to beat the dealers hand without going over 21"
+    puts "The goal of blackjack is to beat the dealer's hand without going over 21"
     puts "Picture Cards are worth 10 and Aces are worth 11 or 1."
     puts "\nHow to Play: "
-    puts "At the start of the game you are shown 2 cards of yours and 1 of the dealer"
+    puts "At the start of the game you are shown 2 cards of yours and 1 of the dealer's"
     puts "You have the choice to get another card (hit) or stand"
     puts "If you choose to hit and go over 21 you immediately lose."
-    puts "You then have a choice to continue going. When you finally stand the dealer"
-    puts "then goes until they are between 17-21"
+    puts "Otherwise you can continue hitting."
+    puts "When you finally stand, the dealer then draws until they are between 17-21."
+    puts "The winner is the player who is closer to 21"
     puts "\n----------------------------------------------------------------------------"
     puts "\nPress return to go back"
     x = gets.chomp
@@ -478,7 +479,7 @@ crash = proc{
     crash_loop = true
     while crash_loop
 
-    odds = [(1..30).to_a.sample, (1..20).to_a.sample, (1..15).to_a.sample, (1..10).to_a.sample]
+    odds = [(1..30).to_a.sample, (1..25).to_a.sample, (1..20).to_a.sample, (1..15).to_a.sample]
 
     if crash_x < 1
         chance = odds[0]
