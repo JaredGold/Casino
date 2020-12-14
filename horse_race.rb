@@ -6,6 +6,7 @@ pastel = Pastel.new
 horses = TTY::ProgressBar::Multi.new
 prompt = TTY::Prompt.new
 bet = 0
+player_horse = ""
 
 def load_money()
   money_val = File.open("money_val.txt")
@@ -16,11 +17,12 @@ def load_money()
   money_val.close
   return money
 end
+
+money = load_money()
+
 update_money_file = proc{
   money_file = File.write('money_val.txt', money.to_s)
 }
-
-money = load_money()
 
 gamble_value = proc {
   system('clear')
@@ -50,8 +52,9 @@ def horse_choices(prompt, pastel)
     {name: "#{pastel.bright_magenta('Tank')}", value: 'tank'},
     {name: "#{pastel.yellow('Argo')}", value: 'argo'},
     {name: "#{pastel.cyan('Nero')}", value: 'nero'}
-]
-chosen_option = prompt.select("\nWhich horse would you like to bet on?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+  ]
+  chosen_option = prompt.select("\nWhich horse would you like to bet on?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
+  return chosen_option
 end
 
 # Counter Variable
@@ -126,18 +129,28 @@ horse_race = proc{
 
   [th1, th2, th3, th4, th5, th6].each { |t| t.join }
 
-  if king
-    puts "\n#{pastel.red('King')} won"
-  elsif colt
-    puts "\n#{pastel.green('Colt')} won"
-  elsif buck
-    puts "\n#{pastel.blue('Buck')} won"
-  elsif tank
-    puts "\n#{pastel.bright_magenta('Tank')} won"
-  elsif argo
-    puts "\n#{pastel.yellow('Argo')} won"
-  elsif nero
-    puts "\n#{pastel.cyan('Nero')} won"
+  win_procedure = proc{
+    puts "Congratulations! You won $#{bet * 6}"
+    money = money + (bet * 6)
+    update_money_file.call
+  }
+
+  if king && player_horse == 'king'
+    win_procedure.call
+  elsif colt && player_horse == 'colt'
+    win_procedure.call
+  elsif buck && player_horse == 'buck'
+    win_procedure.call
+  elsif tank && player_horse == 'tank'
+    win_procedure.call
+  elsif argo && player_horse == 'argo'
+    win_procedure.call
+  elsif nero && player_horse == 'nero'
+    win_procedure.call
+  else
+    puts "You lost $#{bet}"
+    money = money - bet
+    update_money_file.call
   end
 }
 
