@@ -87,8 +87,8 @@ def horse_choices(prompt, pastel)
     {name: "#{pastel.green('Colt')}", value: 'colt'},
     {name: "#{pastel.blue('Buck')}", value: 'buck'},
     {name: "#{pastel.bright_magenta('Tank')}", value: 'tank'},
-    {name: "#{pastel.yellow('Argo')}", value: 'argo'},
-    {name: "#{pastel.cyan('Nero')}", value: 'nero'}
+    {name: "#{pastel.yellow('Nick')}", value: 'nick'},
+    {name: "#{pastel.cyan('Cage')}", value: 'Cage'}
   ]
   chosen_option = prompt.select("\nWhich horse would you like to bet on?", choices, help_color: :yellow, help: "(Use Keyboard Arrow Keys)", show_help: :start, filter: true)
   return chosen_option
@@ -107,8 +107,8 @@ king = false
 colt = false
 buck = false
 tank = false
-argo = false
-nero = false
+nick = false
+cage = false
 
 def wait()
   time = rand(0.01..0.15)
@@ -137,8 +137,8 @@ reset_horses = proc{
   colt = false
   buck = false
   tank = false
-  argo = false
-  nero = false
+  nick = false
+  cage = false
 }
 
 horse_race = proc{
@@ -164,10 +164,10 @@ horse_race = proc{
       tank = true
       reset_counters.call
     elsif c5 == 75
-      argo = true
+      nick = true
       reset_counters.call
     elsif c6 == 75
-      nero = true
+      cage = true
       reset_counters.call
     end
   }
@@ -176,8 +176,8 @@ horse_race = proc{
   bar2 = horses.register("#{pastel.green('Colt')} [:bar]", head: "#{pastel.green('>')}", total: 75)
   bar3 = horses.register("#{pastel.blue('Buck')} [:bar]", head: "#{pastel.blue('>')}", total: 75)
   bar4 = horses.register("#{pastel.bright_magenta('Tank')} [:bar]", head: "#{pastel.bright_magenta('>')}", total: 75)
-  bar5 = horses.register("#{pastel.yellow('Argo')} [:bar]", head: "#{pastel.yellow('>')}", total: 75)#
-  bar6 = horses.register("#{pastel.cyan('Nero')} [:bar]", head: "#{pastel.cyan('>')}", total: 75)
+  bar5 = horses.register("#{pastel.yellow('Nick')} [:bar]", head: "#{pastel.yellow('>')}", total: 75)#
+  bar6 = horses.register("#{pastel.cyan('Cage')} [:bar]", head: "#{pastel.cyan('>')}", total: 75)
 
   th1 = Thread.new { 75.times {wait() ; bar1.advance ; c1 += 1 ; horses.stop if c1 == 75} } 
   th2 = Thread.new { 75.times {wait() ; bar2.advance ; c2 += 1 ; horses.stop if c2 == 75} }
@@ -205,9 +205,9 @@ horse_race = proc{
     win_procedure.call
   elsif tank && player_horse == 'tank'
     win_procedure.call
-  elsif argo && player_horse == 'argo'
+  elsif nick && player_horse == 'nick'
     win_procedure.call
-  elsif nero && player_horse == 'nero'
+  elsif cage && player_horse == 'cage'
     win_procedure.call
   else
     puts "You lost $#{bet}"
