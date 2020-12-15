@@ -1,4 +1,4 @@
-# # Initialisation
+# # Initialization
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'
@@ -7,6 +7,20 @@ require 'timeout'
 require './cards.rb'
 require './deck.rb'
 
+# CODE 
+# NEEDS 
+# TO
+# BE
+# CREATED
+# HERE
+# TO
+# MAKE
+# SURE
+# THE
+# REQUIRED
+# FILES
+# ARE
+# LOADED
 
 # Variables
 deck = []
@@ -89,7 +103,7 @@ end
 def load_money()
     money_val = File.open("money_val.txt")
     money = money_val.read.to_i
-    if money <= 9
+    if money <= 9 || money == nil
         money = 100
     end
     money_val.close
@@ -101,7 +115,7 @@ money = load_money()
 
 # Writes to money file
 update_money_file = proc{
-    money_file = File.write('money_val.txt', money.to_s)
+    money_file = File.write('money_val.txt', money.to_i.to_s)
 }
 
 # Reset Current Deck
@@ -222,7 +236,7 @@ gamble_value = proc {
     if money <= 300
         bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
     else
-        print 'Ammount: $'
+        print 'Amount: $'
         bet = gets.chomp.to_i
         if bet <= 0
             puts "Invalid amount"
@@ -422,10 +436,11 @@ end
 
 
 # Start Menu
-def start_menu(prompt, casino)
+def start_menu(prompt, casino, money)
     system('clear')
     casino.call
     puts "Welcome one welcome all to the wonderful world of gambling!"
+    puts "Your current balance is $#{money}"
     
     choices = [
         {name: "Games", value: 'games'},
@@ -595,7 +610,7 @@ end
 
 
 #Main game loop
-game_option = start_menu(prompt, casino_title)
+game_option = start_menu(prompt, casino_title, money)
 if game_option == 'bj'
     blackjack_menu.call
 elsif game_option == 'cr'

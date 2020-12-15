@@ -71,7 +71,7 @@ gamble_value = proc {
   if money <= 300
       bet = prompt.slider("Bet", min: 0 , max: money, step: 10, default: bet)
   else
-      print 'Ammount: $'
+      print 'Amount: $'
       bet = gets.chomp.to_i
       if bet <= 0
           puts "Invalid amount"
