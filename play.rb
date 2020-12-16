@@ -240,7 +240,7 @@ gamble_value = proc {
         bet = gets.chomp.to_i
         if bet <= 0
             puts "Invalid amount"
-            sleep('0.4')
+            sleep(0.4)
             gamble_value.call
         end
     end
