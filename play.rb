@@ -23,6 +23,7 @@ crash_x = 0.2
 crash_y = ''
 crash_start_array = [[crash_y, crash_x]]
 crash_array = crash_start_array
+lose = false
 
 
 # Creates a brand new deck
@@ -319,6 +320,7 @@ blackjack = proc {
             chosen_option = 0
             game_loop = false
         when 3
+            lose = true
             user_choice = 0
             break
         end
@@ -332,10 +334,11 @@ blackjack = proc {
     if banker_value > 21
         puts "Congratulations you won $#{bet}!"
         money += bet
-    elsif banker_value > player_value || player_value > 21
+    elsif banker_value > player_value || player_value > 21 || lose == true
         puts "You lost $#{bet}..."
         money -= bet
         update_money_file.call
+        lose = false
         if money <= 0
             sleep (1)
             money_check.call
