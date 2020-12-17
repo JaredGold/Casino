@@ -73,7 +73,7 @@ gamble_value = proc {
   else
       print 'Amount: $'
       bet = gets.chomp.to_i
-      if bet <= 0
+      if bet <= 0 || bet > money
           puts "Invalid amount"
           sleep(0.4)
           gamble_value.call

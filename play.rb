@@ -4,26 +4,13 @@ require 'tty-table'
 require 'tty-prompt'
 require 'ascii_charts'
 require 'timeout'
+require 'pastel'
 require './cards.rb'
 require './deck.rb'
 
-# CODE 
-# NEEDS 
-# TO
-# BE
-# CREATED
-# HERE
-# TO
-# MAKE
-# SURE
-# THE
-# REQUIRED
-# FILES
-# ARE
-# LOADED
-
 # Variables
 deck = []
+pastel = Pastel.new
 player_hand = []
 banker_hand = []
 player_value = 0
@@ -101,7 +88,13 @@ def create_deck
 end
 # Loads money file
 def load_money()
+    begin
     money_val = File.open("money_val.txt")
+    rescue 
+        puts "No File found - Creating new File"
+        money_val = File.new("money_val.txt", "a+")
+    end
+
     money = money_val.read.to_i
     if money <= 9 || money == nil
         money = 100
@@ -238,7 +231,7 @@ gamble_value = proc {
     else
         print 'Amount: $'
         bet = gets.chomp.to_i
-        if bet <= 0
+        if bet <= 0 || bet > money
             puts "Invalid amount"
             sleep(0.4)
             gamble_value.call
@@ -610,11 +603,34 @@ end
 
 
 #Main game loop
-game_option = start_menu(prompt, casino_title, money)
-if game_option == 'bj'
-    blackjack_menu.call
-elsif game_option == 'cr'
-    crash_menu.call
-elsif game_option == 'hr'
-    system('ruby horse_race.rb')
+if ARGV.count > 0
+    if ARGV[0] == '-bj'     || ARGV[0] == '--blackjack'
+        ARGV.clear
+        blackjack_menu.call
+    elsif ARGV[0] == '-cr'  || ARGV[0] == '--crash'
+        ARGV.clear
+        crash_menu.call
+    elsif ARGV[0] == '-hr'  || ARGV[0] == '--horserace'
+        ARGV.clear
+        system('ruby horse_race.rb')
+    elsif ARGV[0] == '-h'   || ARGV[0] == '--help'
+        ARGV.clear
+        main_help()
+        exit
+    else
+        puts "Incorrect Command"
+        puts "  For help type '-h' or '--help'"
+        puts "  For Blackjack type '-bj' or '--blackjack'"
+        puts "  For Crash type '-cr' or '--crash'"
+        puts "  For Horse Racing type '-hr' or '--horseracing'"
+    end
+else
+    game_option = start_menu(prompt, casino_title, money)
+    if game_option == 'bj'
+        blackjack_menu.call
+    elsif game_option == 'cr'
+        crash_menu.call
+    elsif game_option == 'hr'
+        system('ruby horse_race.rb')
+    end
 end
