@@ -477,6 +477,9 @@ def main_help()
     puts "Each game has it's own Rules so if you want to read more do so in those games."
     puts "\nRemember this is just a game. If you do find gambling addictive, please seek"
     puts "professional help and read more at https://www.gamblinghelponline.org.au/"
+    if ARGV.count > 0
+        exit(0)
+    end
     puts "\n-------------------------------------------------------------------------"
     puts "\nPress return to go back"
     wait = gets.chomp
@@ -617,8 +620,8 @@ if ARGV.count > 0
         ARGV.clear
         system('ruby horse_race.rb')
     elsif ARGV[0] == '-h'   || ARGV[0] == '--help'
-        ARGV.clear
         main_help()
+        ARGV.clear
         exit
     else
         puts "Incorrect Command"
