@@ -432,11 +432,11 @@ end
 
 
 # Start Menu
-def start_menu(prompt, casino, money)
+def start_menu(prompt, casino, money, pastel)
     system('clear')
     casino.call
     puts "Welcome one welcome all to the wonderful world of gambling!"
-    puts "Your current balance is $#{money}"
+    puts "Your current balance is #{pastel.yellow("$") + pastel.yellow(money)}"
     
     choices = [
         {name: "Games", value: 'games'},
@@ -456,7 +456,7 @@ def start_menu(prompt, casino, money)
         ]
         chosen_option = prompt.select("Which game would you like to play?", choices, help_color: :yellow, help: "(Use Keyboard Arrow keys)", show_help: :start, filter: true)
         if chosen_option == 3
-            start_menu(prompt, casino)
+            start_menu(prompt, casino, money, pastel)
         else
             return chosen_option
         end   
@@ -631,7 +631,7 @@ if ARGV.count > 0
         puts "  For Horse Racing type '-hr' or '--horseracing'"
     end
 else
-    game_option = start_menu(prompt, casino_title, money)
+    game_option = start_menu(prompt, casino_title, money, pastel)
     if game_option == 'bj'
         blackjack_menu.call
     elsif game_option == 'cr'
