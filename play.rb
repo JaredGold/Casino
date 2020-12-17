@@ -1,4 +1,4 @@
-# # Initialization
+# Initialization
 require 'tty-box'
 require 'tty-table'
 require 'tty-prompt'

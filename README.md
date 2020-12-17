@@ -3,12 +3,12 @@
 ## GitHub Link
 Attached is a GitHub link to my repo - [here](https://github.com/JaredGold/Casino)
 
-# Software Development Plan <u>(300-500 words)</u> REQUIRES MORE WORDS
+# Software Development Plans
 My application is a Casino application designed to be fun and allow the user to blow off steam while not risking real money. In this application it will have 2-3 games which will cross save money and allow for a full fledged gambling experience.
 
 Its main purpose is to target users who may already be gamblers or gamers and require a way to not spend their money and still tickle the users gambling itch. A user can find my application and use it to play a variety of games until they decide they are done with their experience. The best part about my application is it will be simple and still maintain ethical direction.
 
-# List of features
+# Features
 #### Permanent Money Saving
 
 My application will have a method to permanently save and update a user file which will save the total money the user has acquired. It will do this by using a simple text file with the capabilities of `File.write` and `File.open` which will then read and convert the user money file an integer. After creating this money value after every time a game runs it will update the text file. If the file is read as a 0 or any number less than a valid number it will automatically reset the player money to $100.
@@ -33,7 +33,7 @@ Whilst making this application it is very important to me that I keep in mind th
 
 Taking advantage of gems offered by the community I am going to use TTY-Prompt to create a very simple user experience that can handle errors and keep the user from being required to do too much. Using Prompt will only allow specific inputs which will stop the user from being able to cause any errors or issues that I can not prepare myself for. I will use this throughout my whole program whenever a user is required to put in an input. Unfortunately I will have to create a buffer for when a slider becomes too large so with that I will then require a user input but verify what the users input is.
 
-# Develop an outline of the user interaction and experience for the application.
+# User Interaction & Experience
 The user will first run my code by using a Shell script to install all requirements and then run the application. It will first give the user a set of options to either read the rules, open games and/or close the application. If the user decides to read the rules I will explain how the application works to the users and then I will also give them a gambling warning. They then can head back and choose between all 3 games using tty-prompt.
 
 If the user chooses to play blackjack it will initialize a blackjack menu. The menu will be very similar to that of the main menu. The user can play the game, read the rules or exit. If they choose to exit it will give them the option to go to the main menu or close the program. If they choose the rules I will explain the complete in and outs of how to play blackjack. Then if they choose to play the game it will show the user their total money and then ask the user how much they would like to bet. After the user bets an amount it will draw the cards and show the user the cards they have and their value. It will then give the user the ability to hit or stand. If the user chooses to hit it will draw them a new card and then loop through drawing. If the user chooses to stand it will then show the total value of the dealers hand and show the face down card. If the dealers value is less than 17 it will draw a card and repeat until the dealer value is 17 or above. If any of the previous criteria is met it will take the user to a screen where it will evaluate who has won. If the user is closer to 21 but not over or if the dealer is above 21 it will declare the user a winner and multiply the users bet by 2 and then add it to their total money. If the user's value went over 21 or the users value is further from 21 than the dealer and the dealer is not greater than 21 it will deduct the users bet from the total value. It will then give the user the ability to replay or quit (Back to menu or exit the application)
@@ -44,9 +44,8 @@ Else if the user chooses to play Horse Races they will be brought to a similar m
 
 That is the end of the application. Through all of this if the user will not be able to put an input that is not already scripted. Because of this the user is unable to create any errors and thus the application is unable to crash.
 
-# Develop a diagram which describes the control flow of your application. Your diagram must:
-- show the workflow/logic and/or integration of the features in your application for each feature.
-- utilise a recognised format or set of conventions for a control flow diagram, such as UML.
+# Control Flow
+![Casino - FlowChart](Casino - FlowChart.png)
 
 # Develop an implementation plan which:
 - outlines how each feature will be implemented and a checklist of tasks for each feature

@@ -9,9 +9,15 @@ bet = 0
 player_horse = ''
 
 def load_money()
+  begin
   money_val = File.open("money_val.txt")
+  rescue 
+      puts "No File found - Creating new File"
+      money_val = File.new("money_val.txt", "a+")
+  end
+
   money = money_val.read.to_i
-  if money <= 9
+  if money <= 9 || money == nil
       money = 100
   end
   money_val.close
