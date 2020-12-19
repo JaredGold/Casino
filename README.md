@@ -38,26 +38,40 @@ The user will first run my code by using a Shell script to install all requireme
 
 If the user chooses to play blackjack it will initialize a blackjack menu. The menu will be very similar to that of the main menu. The user can play the game, read the rules or exit. If they choose to exit it will give them the option to go to the main menu or close the program. If they choose the rules I will explain the complete in and outs of how to play blackjack. Then if they choose to play the game it will show the user their total money and then ask the user how much they would like to bet. After the user bets an amount it will draw the cards and show the user the cards they have and their value. It will then give the user the ability to hit or stand. If the user chooses to hit it will draw them a new card and then loop through drawing. If the user chooses to stand it will then show the total value of the dealers hand and show the face down card. If the dealers value is less than 17 it will draw a card and repeat until the dealer value is 17 or above. If any of the previous criteria is met it will take the user to a screen where it will evaluate who has won. If the user is closer to 21 but not over or if the dealer is above 21 it will declare the user a winner and multiply the users bet by 2 and then add it to their total money. If the user's value went over 21 or the users value is further from 21 than the dealer and the dealer is not greater than 21 it will deduct the users bet from the total value. It will then give the user the ability to replay or quit (Back to menu or exit the application)
 
-Else if the user chooses to play crash, they will be brought to a similar menu to blackjack with play, rules and exit. Rules and exit will work similarly to blackjack although crash gameplay will be different. At the start the user will be asked how much to bet and then it will show a graph and an amount the stock is currently worth. It will refresh every 0.4 seconds and stop when the user finally presses return, if the user does not press return the stock will continue to grow. At any point the stock can crash and reset to 0. If it does the user will leave with no money. If the user plays and presses return it will stop and multiply the users bet by value when they pressed return. They then will be brought to a similar end screen to blackjack.
+Else if the user chooses to play crash, they will be brought to a similar menu to blackjack with play, rules and exit. Rules and exit will work similarly to blackjack although crash game-play will be different. At the start the user will be asked how much to bet and then it will show a graph and an amount the stock is currently worth. It will refresh every 0.4 seconds and stop when the user finally presses return, if the user does not press return the stock will continue to grow. At any point the stock can crash and reset to 0. If it does the user will leave with no money. If the user plays and presses return it will stop and multiply the users bet by value when they pressed return. They then will be brought to a similar end screen to blackjack.
 
 Else if the user chooses to play Horse Races they will be brought to a similar menu as the previous 3 games. If the user chooses to play they will again be given a gamble amount query and then take them to a new screen. This screen will allow them to pick a horse. When the user picks a horse they will then watch 6 custom loading bars race to reach 100%. When the first loading bar reaches the 100% it will stop and log the horse. If the horse is the same as the horse that the user bet it will show a congratulations and then times the bet by 6 and add it to the users total value. If the user's horse is not the same as the winning horse the bet amount will be subtracted from the users money value. Again the user can replay.
 
 That is the end of the application. Through all of this if the user will not be able to put an input that is not already scripted. Because of this the user is unable to create any errors and thus the application is unable to crash.
 
 # Control Flow
-![Casino - FlowChart](Casino - FlowChart.png)
+![Casino - FlowChart](./docs/Casino-FlowChart.png)
 
-# Develop an implementation plan which:
-- outlines how each feature will be implemented and a checklist of tasks for each feature
-- prioritise the implementation of different features, or checklist items within a feature
-- provide a deadline, duration or other time indicator for each feature or checklist/checklist-item
+# Implementation Plan
+My implementation plan was very rough and definitely needs to be worked on with my next project but working off of a schedule with deadlines was a very great way for me to complete this project. It allowed for a very rigorous and structured method.
 
-Utilise a suitable project management platform to track this implementation plan
+---
 
-> Your checklists for each feature should have at least 5 items.
+![Implementation_plan_01](./docs/Imp_pl01.png)
+![Implementation_plan_02](./docs/Imp_pl02.png)
+![Implementation_plan_03](./docs/Imp_pl03.png)
 
-# Design help documentation which includes a set of instructions which accurately describe how to use and install the application.
-You must include:
-- steps to install the application
-- any dependencies required by the application to operate
-- any system/hardware requirements
+# How To use Casino
+
+### Requirements
+
+- Ruby 2.7.2 ([Install here](https://www.ruby-lang.org/en/))
+- MacOS or Linux (For windows users [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10))
+
+### How to Install
+1. Clone or download the repo [here](https://github.com/JaredGold/Casino)!
+2. Open the `./src` directory
+3. In your chosen terminal run either `bash casino_install.sh` or `zsh casino_install.sh` to run and install.
+4. After Installing to run normally use `bash casino.sh` or `zsh casino.sh`
+
+#### *Inputs*
+Running `bash casino.sh` will take some commands like so `... casino.sh -h`
+- `-h` or `--help` loads help menu
+- `-bj` or `--blackjack` loads blackjack
+- `-hr` or `--horserace` loads horse racing
+- `-cr` or `--crash` loads crash

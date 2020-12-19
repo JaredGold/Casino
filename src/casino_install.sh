@@ -1,3 +1,3 @@
 gem install bundler
 bundle install
-ruby play.rb
+ruby play.rb $1
